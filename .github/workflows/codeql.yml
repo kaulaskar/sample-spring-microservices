@@ -31,14 +31,14 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
-        run:  cd ${{github.workspace}}/${{vars.SERVICE_NAME}} ;sudo docker build -t sailesh94/${{vars.SERVICE_NAME}} .
+        run:  cd ${{github.workspace}}/${{vars.SERVICE_NAME}} ;sudo docker build -t ${{vars.SERVICE_NAME}} .
 
       - name: Log in to Docker registry
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
 
-      # - name: Tagging the image
-      #   run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}
+      - name: Tagging the image
+        run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}
 
       - name: Push Docker image
         run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}
