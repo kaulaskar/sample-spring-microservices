@@ -48,6 +48,6 @@ jobs:
 
     steps:
       - name: run k8 yaml file 
-        run: cd /opt; kubectl apply -f deployment.yaml 
+        run: cd /opt; sudo kubectl apply -f deployment.yaml 
 
         
