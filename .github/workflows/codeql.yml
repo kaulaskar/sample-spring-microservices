@@ -40,15 +40,16 @@ jobs:
       - name: Commit id 
         run: |
           echo ${{ github.sha }}
-          echo $(git rev-parse --short "$github.sha")
-      - name: Get Hash
-        id: hash
-        run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
-
-      - name: Check Hash
-        run: echo "${{ env.hash }}"    
-
-
+        - name: Declare some variables
+          shell: bash
+          run: |
+            echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
+            echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
+        - name: Another step
+          run: |
+            echo "Branch: ${{ env.branch }}"
+            echo "Sha: ${{ env.sha_short }}"      
+      
       # - name: Set up Docker
       #   uses: docker/setup-buildx-action@v1
 
