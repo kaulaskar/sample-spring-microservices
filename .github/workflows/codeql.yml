@@ -38,7 +38,10 @@ jobs:
       - name: Output Run Number
         run: echo ${{ github.run_number }}
       - name: Output Run Attempt
-        run: echo ${{ github.run_attempt }}
+        run: |
+         git_hash = $(git rev-parse --short "$GITHUB_SHA")
+         echo "$(git_hash)"
+
 
       # - name: Set up Docker
       #   uses: docker/setup-buildx-action@v1
