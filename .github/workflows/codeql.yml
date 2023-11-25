@@ -39,8 +39,8 @@ jobs:
         run: echo ${{ github.run_number }}
       - name: Commit id 
         run: |
-        echo ${{ github.sha }}
-        echo $(git rev-parse --short "$github.sha")
+          echo ${{ github.sha }}
+          echo $(git rev-parse --short "$github.sha")
 
 
       # - name: Set up Docker
