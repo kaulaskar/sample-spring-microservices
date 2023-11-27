@@ -68,7 +68,7 @@ jobs:
       - name: Tagging the image
         # run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
         # run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:$version
-        run : echo $version
+        run: echo $version
 
       - name: Push Docker image
         # run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
