@@ -26,30 +26,31 @@ jobs:
 
       - name: Build with Maven
         run: echo ${{github.workspace}}; cd ${{github.workspace}}/${{vars.SERVICE_NAME}} ; mvn clean package
-      - name: Generate build number
-        uses: onyxmueller/build-tag-number@v1 
-        with:
-         token: ${{secrets.github_token}}    
+      # - name: Generate build number
+      #   uses: onyxmueller/build-tag-number@v1 
+      #   with:
+      #    token: ${{secrets.github_token}}    
 
-      - name: Print new build number
-        run: echo "Build number is $BUILD_NUMBER"
-      - name: Output Run ID
-        run: echo ${{ github.run_id }}
-      - name: Output Run Number
-        run: echo ${{ github.run_number }}
-      - name: Commit id 
-        run: |
-          echo ${{ github.sha }}
-      - name: Declare some variables
-        shell: bash
-        run: |
-          echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
-          # echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
-      - name: Another step
-        run: |
-          # echo "Branch: ${{ env.branch }}"
-          echo "Sha: ${{ env.sha_short }}"      
-
+      # - name: Print new build number
+      #   run: echo "Build number is $BUILD_NUMBER"
+      # - name: Output Run ID
+      #   run: echo ${{ github.run_id }}
+      # - name: Output Run Number
+      #   run: echo ${{ github.run_number }}
+      # - name: Commit id 
+      #   run: |
+      #     echo ${{ github.sha }}
+      # - name: Declare some variables
+      #   shell: bash
+      #   run: |
+      #     echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
+      #     # echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
+      # - name: Another step
+      #   run: |
+      #     # echo "Branch: ${{ env.branch }}"
+      #     echo "Sha: ${{ env.sha_short }}"      
+      - name: creation of tag
+        run: cd ${{github.workspace}}; version=$(grep modelVersion pom.xml | grep -v -e '<?xml|~'| head -n 1 | sed 's/[[:space:]]//g' | sed -E 's/<.{0,1}modelVersion>//g' | awk '{print $1}')
       - name: Docker permission 
         run: sudo chmod 777 /var/run/docker.sock
 
@@ -65,10 +66,12 @@ jobs:
 
 
       - name: Tagging the image
-        run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
+        # run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
+        run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:$version
 
       - name: Push Docker image
-        run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
+        # run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
+        run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:$version
   # deploy:
   #   runs-on: k8
   #   needs: build
