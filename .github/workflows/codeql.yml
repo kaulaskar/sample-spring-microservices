@@ -52,6 +52,9 @@ jobs:
       - name: creation of tag
         run: cd ${{github.workspace}}; echo "version=$(grep modelVersion pom.xml | grep -v -e '<?xml|~'| head -n 1 | sed 's/[[:space:]]//g' | sed -E 's/<.{0,1}modelVersion>//g' | awk '{print $1}')" >> "$GITHUB_ENV"
           
+      - name: version of release 
+        run: echo ${{ env.version }}
+
       - name: Docker permission 
         run: sudo chmod 777 /var/run/docker.sock
 
@@ -69,7 +72,7 @@ jobs:
       - name: Tagging the image
         # run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
         run: docker tag ${{vars.SERVICE_NAME}} ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.version }}
-        run: echo ${{ env.version }}
+        
 
       # - name: Push Docker image
         # run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
