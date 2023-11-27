@@ -65,12 +65,12 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{secrets.DOCKER_USERNAME}}/${{vars.SERVICE_NAME}}:${{ env.sha_short }}
-  deploy:
-    runs-on: k8
-    needs: build
+  # deploy:
+  #   runs-on: k8
+  #   needs: build
 
-    steps:
-      - name: run k8 yaml file 
-        run: cd /opt; sudo kubectl apply -f deployment.yaml 
+  #   steps:
+  #     - name: run k8 yaml file 
+  #       run: cd /opt; sudo kubectl apply -f deployment.yaml 
 
         
